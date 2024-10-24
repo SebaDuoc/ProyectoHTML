@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #180bcf;
+            padding: 10px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        nav ul li {
+            float: left;
+        }
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            background-color: #45a049;
+        }
+        .logo {
+            float: left;
+            padding: 10px;
+        }
+        .clear {
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <h2 style="color: white;">Ferreteria</h2>
+        </div>
+        <ul>
+            <li><a href="home.html">Inicio</a></li>
+            <li><a href="productos.html">Productos</a></li>
+            <li><a href="#">Ofertas</a></li>
+            <li><a href="carrito.html">Carrito</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+        <div class="clear"></div>
+    </nav>
+
+    <h1>Bienvenido al Supermercado Online</h1>
+    <p>Encuentra los mejores productos y ofertas para tu hogar.</p>
+
+</body>
+    
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .producto {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 220px;
+            margin: 20px;
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .producto img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .producto h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .producto p {
+            font-size: 16px;
+            color: #555;
+        }
+        .producto .precio {
+            font-size: 20px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .producto button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .producto button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center; padding: 20px;">Catálogo de Productos</h1>
+
+    <div class="catalogo">
+        <div class="producto">
+            <img src="https://via.placeholder.com/220x180" alt="Producto 1">
+            <h3>Zapatillas Deportivas</h3>
+            <p class="precio">$50.00</p>
+            <button>Añadir al carrito</button>
+        </div>
+
+        <div class="producto">
+            <img src="https://via.placeholder.com/220x180" alt="Producto 2">
+            <h3>Bolsa de Frutas</h3>
+            <p class="precio">$30.00</p>
+            <button>Añadir al carrito</button>
+        </div>
+
+        <div class="producto">
+            <img src="https://via.placeholder.com/220x180" alt="Producto 3">
+            <h3>Cafetera Eléctrica</h3>
+            <p class="precio">$75.00</p>
+            <button>Añadir al carrito</button>
+        </div>
+
+        <div class="producto">
+            <img src="https://via.placeholder.com/220x180" alt="Producto 4">
+            <h3>Camisa Casual</h3>
+            <p class="precio">$25.00</p>
+            <button>Añadir al carrito</button>
+        </div>
+
+        <div class="producto">
+            <img src="https://via.placeholder.com/220x180" alt="Producto 5">
+            <h3>Reloj Inteligente</h3>
+            <p class="precio">$150.00</p>
+            <button>Añadir al carrito</button>
+        </div>
+
+        <div class="producto">
+            <img src="https://via.placeholder.com/220x180" alt="Producto 6">
+            <h3>Gafas de Sol</h3>
+            <p class="precio">$20.00</p>
+            <button>Añadir al carrito</button>
+        </div>
+    </div>
+
+</body>
+</html>
