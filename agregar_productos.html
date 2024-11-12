@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Productos</title>
+<style>
+    /* Estilos CSS */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        width: 500px; /* Aumentado el ancho del contenedor */
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 1.8em;
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    input[type="text"], input[type="number"] {
+        padding: 12px; /* Aumentado el padding de los campos */
+        width: 100%;
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    button {
+        padding: 12px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 48%;
+        font-size: 1em;
+    }
+
+    .btn-volver {
+        background-color: #dc3545;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        max-height: 200px;
+        overflow-y: auto; /* Añadido scroll si la lista es muy larga */
+    }
+
+    li {
+        background: #e9ecef;
+        margin: 8px 0;
+        padding: 15px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        font-size: 1em;
+    }
+
+    .product-info {
+        font-size: 1em;
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Productos</h1>
+        <div class="form-container">
+            <input type="text" id="productName" placeholder="Nombre del producto">
+            <input type="number" id="productQuantity" placeholder="Cantidad">
+            <input type="text" id="productCode" placeholder="Código del producto">
+            <input type="number" id="productPrice" placeholder="Precio (USD)">
+        </div>
+        <div class="button-container">
+            <button class="btn-volver" id="backButton">Volver</button>
+            <button id="addButton">Agregar</button>
+        </div>
+        <ul id="productList"></ul>
+    </div>
+
+    <script>
+        // Lógica JavaScript
+        const addButton = document.getElementById('addButton');
+        const backButton = document.getElementById('backButton');
+        const productNameInput = document.getElementById('productName');
+        const productQuantityInput = document.getElementById('productQuantity');
+        const productCodeInput = document.getElementById('productCode');
+        const productPriceInput = document.getElementById('productPrice');
+        const productList = document.getElementById('productList');
+
+        // Función para agregar un producto a la lista
+        addButton.addEventListener('click', () => {
+            const name = productNameInput.value.trim();
+            const quantity = productQuantityInput.value.trim();
+            const code = productCodeInput.value.trim();
+            const price = productPriceInput.value.trim();
+
+            // Validar que todos los campos estén llenos
+            if (name === "" || quantity === "" || code === "" || price === "") {
+                alert("Por favor completa todos los campos.");
+                return;
+            }
+
+            // Crear un nuevo elemento de lista
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="product-info"><strong>Nombre:</strong> ${name}</div>
+                <div class="product-info"><strong>Cantidad:</strong> ${quantity}</div>
+                <div class="product-info"><strong>Código:</strong> ${code}</div>
+                <div class="product-info"><strong>Precio:</strong> $${parseFloat(price).toFixed(2)}</div>
+            `;
+            
+
+
+            // Agregar el elemento a la lista
+            productList.appendChild(li);
+
+            // Limpiar los campos de texto
+            productNameInput.value = '';
+            productQuantityInput.value = '';
+            productCodeInput.value = '';
+            productPriceInput.value = '';
+        });
+
+        // Función para el botón "Volver"
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('backButton').addEventListener('click', () => {
+                window.location.href = 'menu.html';     
+            });
+        });
+    </script>
+</body>
+
+
+</html>
