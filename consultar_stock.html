@@ -27,6 +27,22 @@
         margin-top: 20px;
     }
 
+    .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #6c757d;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .back-button:hover {
+        background-color: #5a6268;
+    }
+
     h1 {
         text-align: center;
         color: #007bff;
@@ -85,10 +101,6 @@
         background-color: #f9f9f9;
     }
 
-    .low-stock {
-        background-color: #ffcccc; /* Resalta las filas con bajo stock */
-    }
-
     /* Estilos del modal */
     .modal {
         display: none; /* Oculto por defecto */
@@ -117,6 +129,16 @@
         margin-bottom: 10px;
     }
 
+    .modal-content ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .modal-content li {
+        margin: 5px 0;
+        color: #333;
+    }
+
     .modal-content button {
         margin-top: 15px;
         padding: 10px 20px;
@@ -136,6 +158,9 @@
 <body>
 
 <div class="container">
+    <!-- Botón de volver -->
+    <a href="menu.html" class="back-button">Volver</a>
+
     <h1>Consultar Stock</h1>
 
     <!-- Barra de búsqueda -->
@@ -165,13 +190,13 @@
             <tr>
                 <td>Clavos</td>
                 <td>Ferretería</td>
-                <td>8</td> <!-- Este producto tiene bajo stock -->
+                <td>5</td>
                 <td>$5</td>
             </tr>
             <tr>
                 <td>Destornillador</td>
                 <td>Herramientas</td>
-                <td>5</td> <!-- Este producto también tiene bajo stock -->
+                <td>5</td>
                 <td>$15</td>
             </tr>
         </tbody>
@@ -182,7 +207,8 @@
 <div id="lowStockModal" class="modal">
     <div class="modal-content">
         <h2>Advertencia</h2>
-        <p>Queda poco stock de algunos productos.</p>
+        <p>Queda poco stock de los siguientes productos:</p>
+        <ul id="lowStockList"></ul>
         <button onclick="closeModal()">Cerrar</button>
     </div>
 </div>
@@ -207,12 +233,21 @@
     function checkLowStock() {
         const rows = document.querySelectorAll("#stockTable tbody tr");
         let lowStockFound = false;
-        
+        const lowStockList = document.getElementById("lowStockList");
+        lowStockList.innerHTML = ""; // Limpiar lista del modal
+
         rows.forEach(row => {
             const stock = parseInt(row.cells[2].textContent, 10);
+            const productName = row.cells[0].textContent;
+            
             if (stock < 10) {
                 row.classList.add("low-stock"); // Agrega clase para resaltar fila
                 lowStockFound = true;
+                
+                // Agregar producto a la lista en el modal
+                const listItem = document.createElement("li");
+                listItem.textContent = productName;
+                lowStockList.appendChild(listItem);
             }
         });
         

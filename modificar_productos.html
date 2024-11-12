@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Producto</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace opcional para estilos externos -->
+    <style>
+        /* Estilos básicos para el formulario */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Modificar Producto</h2>
+    <form action="procesar_modificacion.php" method="POST">
+        <label for="product-id">ID del Producto</label>
+        <input type="text" id="product-id" name="product-id" placeholder="Ingrese el ID del producto" required>
+
+        <label for="nombre">Nombre del Producto</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ingrese el nombre del producto">
+
+        <label for="precio">Precio</label>
+        <input type="number" id="precio" name="precio" step="0.01" placeholder="Ingrese el precio">
+
+        <label for="cantidad">Cantidad en Stock</label>
+        <input type="number" id="cantidad" name="cantidad" placeholder="Ingrese la cantidad en stock">
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</div>
+
+</body>
+</html>
