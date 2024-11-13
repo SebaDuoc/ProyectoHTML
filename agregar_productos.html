@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lista de Productos</title>
 <style>
-    /* Estilos CSS */
+    /* Estilos CSS Avanzados */
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -18,15 +18,24 @@
 
     .container {
         background: #fff;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        width: 500px; /* Aumentado el ancho del contenedor */
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        width: 450px;
+        max-width: 90%;
+        text-align: center;
+        animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
-        text-align: center;
         font-size: 1.8em;
+        color: #333;
+        margin-bottom: 20px;
     }
 
     .form-container {
@@ -37,11 +46,18 @@
     }
 
     input[type="text"], input[type="number"] {
-        padding: 12px; /* Aumentado el padding de los campos */
+        padding: 12px;
         width: 100%;
         font-size: 1em;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        outline: none;
+        transition: border 0.3s;
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus {
+        border-color: #4a90e2;
     }
 
     .button-container {
@@ -51,44 +67,68 @@
     }
 
     button {
-        padding: 12px 20px;
-        background-color: #28a745;
+        padding: 12px;
+        font-size: 1em;
+        font-weight: bold;
         color: #fff;
         border: none;
-        border-radius: 5px;
+        border-radius: 8px;
         cursor: pointer;
-        width: 48%;
-        font-size: 1em;
+        width: 100%;
+        transition: background-color 0.3s, transform 0.3s;
     }
 
     .btn-volver {
-        background-color: #dc3545;
+        background-color: #e74c3c;
     }
 
-    button:hover {
-        opacity: 0.9;
+    .btn-volver:hover {
+        background-color: #c0392b;
+        transform: translateY(-3px);
+    }
+
+    .btn-add {
+        background-color: #28a745;
+    }
+
+    .btn-add:hover {
+        background-color: #218838;
+        transform: translateY(-3px);
     }
 
     ul {
         list-style-type: none;
         padding: 0;
-        max-height: 200px;
-        overflow-y: auto; /* Añadido scroll si la lista es muy larga */
+        max-height: 250px;
+        overflow-y: auto;
+        margin-top: 15px;
+        border-top: 1px solid #ddd;
     }
 
     li {
-        background: #e9ecef;
-        margin: 8px 0;
+        background: #f9f9f9;
+        margin: 10px 0;
         padding: 15px;
-        border-radius: 5px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
-        font-size: 1em;
+        gap: 5px;
+        animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-10px); }
+        to { opacity: 1; transform: translateX(0); }
     }
 
     .product-info {
-        font-size: 1em;
-        margin-bottom: 5px;
+        font-size: 0.9em;
+        color: #555;
+    }
+
+    .product-info strong {
+        color: #333;
     }
 </style>
 </head>
@@ -99,17 +139,17 @@
             <input type="text" id="productName" placeholder="Nombre del producto">
             <input type="number" id="productQuantity" placeholder="Cantidad">
             <input type="text" id="productCode" placeholder="Código del producto">
-            <input type="number" id="productPrice" placeholder="Precio (USD)">
+            <input type="number" id="productPrice" placeholder="Precio (CLP)">
         </div>
         <div class="button-container">
             <button class="btn-volver" id="backButton">Volver</button>
-            <button id="addButton">Agregar</button>
+            <button class="btn-add" id="addButton">Agregar</button>
         </div>
         <ul id="productList"></ul>
     </div>
 
     <script>
-        // Lógica JavaScript
+        // Variables de elementos
         const addButton = document.getElementById('addButton');
         const backButton = document.getElementById('backButton');
         const productNameInput = document.getElementById('productName');
@@ -125,27 +165,24 @@
             const code = productCodeInput.value.trim();
             const price = productPriceInput.value.trim();
 
-            // Validar que todos los campos estén llenos
+            // Validación y alerta interactiva
             if (name === "" || quantity === "" || code === "" || price === "") {
                 alert("Por favor completa todos los campos.");
                 return;
             }
 
-            // Crear un nuevo elemento de lista
+            // Crear un nuevo elemento de lista con el contenido del producto
             const li = document.createElement('li');
             li.innerHTML = `
                 <div class="product-info"><strong>Nombre:</strong> ${name}</div>
                 <div class="product-info"><strong>Cantidad:</strong> ${quantity}</div>
                 <div class="product-info"><strong>Código:</strong> ${code}</div>
-                <div class="product-info"><strong>Precio:</strong> $${parseFloat(price).toFixed(2)}</div>
+                <div class="product-info"><strong>Precio:</strong> $${parseFloat(price).toFixed(2)} CLP</div>
             `;
             
+            productList.appendChild(li);  // Agregar el producto a la lista
 
-
-            // Agregar el elemento a la lista
-            productList.appendChild(li);
-
-            // Limpiar los campos de texto
+            // Limpiar campos de entrada
             productNameInput.value = '';
             productQuantityInput.value = '';
             productCodeInput.value = '';
@@ -153,13 +190,9 @@
         });
 
         // Función para el botón "Volver"
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('backButton').addEventListener('click', () => {
-                window.location.href = 'menu.html';     
-            });
+        backButton.addEventListener('click', () => {
+            window.location.href = 'menu.html';
         });
     </script>
 </body>
-
-
 </html>

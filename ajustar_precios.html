@@ -6,6 +6,7 @@
 <title>Ajustar Precios - Ferretería</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
+    /* Estilos generales */
     body {
         font-family: Arial, sans-serif;
         background-color: #f5f5f5;
@@ -13,26 +14,34 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
         padding: 20px;
+        min-height: 100vh;
     }
 
     .container {
         max-width: 600px;
         width: 100%;
         background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         margin-top: 20px;
+        animation: slideIn 0.6s ease;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
         text-align: center;
         color: #007bff;
         margin-bottom: 20px;
+        font-size: 24px;
     }
 
+    /* Barra de búsqueda */
     .search-bar {
         display: flex;
         margin-bottom: 20px;
@@ -45,6 +54,11 @@
         border: 1px solid #ddd;
         border-radius: 5px 0 0 5px;
         outline: none;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .search-bar input[type="text"]:focus {
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
     }
 
     .search-bar button {
@@ -55,10 +69,12 @@
         color: #fff;
         cursor: pointer;
         border-radius: 0 5px 5px 0;
+        transition: background-color 0.3s ease, transform 0.2s;
     }
 
     .search-bar button:hover {
         background-color: #0056b3;
+        transform: scale(1.05);
     }
 
     .form-group {
@@ -78,8 +94,14 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         outline: none;
+        transition: box-shadow 0.3s ease;
     }
 
+    .form-group input[type="number"]:focus {
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.3);
+    }
+
+    /* Botón de ajuste de precio */
     .submit-btn {
         width: 100%;
         padding: 12px;
@@ -89,10 +111,31 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s;
     }
 
     .submit-btn:hover {
         background-color: #218838;
+        transform: scale(1.05);
+    }
+
+    /* Estilos de notificación */
+    .notification {
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px;
+        display: none;
+        text-align: center;
+    }
+
+    .notification.success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .notification.error {
+        background-color: #f8d7da;
+        color: #721c24;
     }
 
 </style>
@@ -108,6 +151,9 @@
         <button onclick="searchProduct()">Buscar</button>
     </div>
 
+    <!-- Notificación de búsqueda -->
+    <div id="searchNotification" class="notification"></div>
+
     <!-- Formulario de ajuste de precio -->
     <form id="priceForm">
         <div class="form-group">
@@ -120,22 +166,27 @@
             <input type="number" id="newPrice" min="0" step="0.01" placeholder="Ingrese el nuevo precio" required>
         </div>
 
+        <!-- Botón de ajuste de precio -->
         <button type="button" class="submit-btn" onclick="adjustPrice()">Ajustar Precio</button>
     </form>
+
+    <!-- Notificación de ajuste de precio -->
+    <div id="adjustNotification" class="notification"></div>
 </div>
 
 <script>
     // Función de búsqueda simulada
     function searchProduct() {
         const input = document.getElementById("searchInput").value.toLowerCase();
-        
+        const searchNotification = document.getElementById("searchNotification");
+
         // Simulación: asume que se encuentra el producto ingresado
         const product = "Martillo"; // Cambia esto según el producto buscado
         if (product.toLowerCase().includes(input)) {
             document.getElementById("productName").value = product;
-            alert("Producto encontrado: " + product);
+            showNotification(searchNotification, "Producto encontrado: " + product, "success");
         } else {
-            alert("Producto no encontrado");
+            showNotification(searchNotification, "Producto no encontrado", "error");
         }
     }
 
@@ -143,13 +194,26 @@
     function adjustPrice() {
         const product = document.getElementById("productName").value;
         const newPrice = document.getElementById("newPrice").value;
+        const adjustNotification = document.getElementById("adjustNotification");
 
         if (product && newPrice) {
-            alert(`El precio de ${product} ha sido ajustado a $${newPrice}`);
+            showNotification(adjustNotification, `El precio de ${product} ha sido ajustado a $${newPrice}`, "success");
             // Aquí podrías agregar una llamada para enviar los datos al servidor
         } else {
-            alert("Por favor, seleccione un producto y establezca un nuevo precio.");
+            showNotification(adjustNotification, "Por favor, seleccione un producto y establezca un nuevo precio.", "error");
         }
+    }
+
+    // Función para mostrar notificaciones
+    function showNotification(element, message, type) {
+        element.textContent = message;
+        element.className = "notification " + type;
+        element.style.display = "block";
+        
+        // Ocultar la notificación después de 3 segundos
+        setTimeout(() => {
+            element.style.display = "none";
+        }, 3000);
     }
 </script>
 

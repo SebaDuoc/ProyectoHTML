@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Estilos originales */
+        /* Estilos mejorados */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -14,42 +14,51 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #4a90e2, #004e92);
+            color: #333;
         }
 
         .login-container {
-            width: 500px;
-            padding: 50px;
-            background-color: #fff;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             text-align: center;
             border-radius: 12px;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-container h1 {
             margin: 0;
-            font-size: 32px;
+            font-size: 2em;
             font-weight: bold;
+            color: #004e92;
         }
 
         .login-container p {
-            font-size: 20px;
-            color: #333;
+            font-size: 1.2em;
+            color: #666;
             margin-top: 5px;
             margin-bottom: 30px;
         }
 
-        .login-container .user-icon {
+        .user-icon {
             width: 90px;
             height: 90px;
-            background-color: #ddd;
+            background-color: #f0f2f5;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-size: 45px;
-            color: #666;
-            margin: 25px 0;
+            color: #004e92;
+            margin: 20px 0;
         }
 
         .input-container {
@@ -62,53 +71,64 @@
             top: 50%;
             left: 15px;
             transform: translateY(-50%);
-            color: #666;
-            font-size: 20px;
+            color: #999;
+            font-size: 18px;
         }
 
         .login-container input[type="text"],
         .login-container input[type="password"] {
             width: 100%;
-            padding: 15px 55px 15px 50px;
-            border: 1px solid #ccc;
+            padding: 12px 50px;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 18px;
+            font-size: 1em;
             box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.2);
         }
 
         .login-container a {
             display: block;
             margin-top: 15px;
-            font-size: 16px;
-            color: #0066cc;
+            font-size: 0.9em;
+            color: #004e92;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .login-container a:hover {
-            text-decoration: underline;
+            color: #006bb3;
         }
 
         .login-btn {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             margin-top: 20px;
-            background-color: #0066cc;
+            background: linear-gradient(135deg, #4a90e2, #004e92);
             border: none;
             border-radius: 8px;
             color: #fff;
-            font-size: 18px;
+            font-size: 1.1em;
+            font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.3s ease, transform 0.2s;
         }
 
         .login-btn i {
-            margin-left: 10px;
+            margin-left: 8px;
         }
 
         .login-btn:hover {
-            background-color: #005bb5;
+            background: linear-gradient(135deg, #3a7fc5, #003d7d);
+            transform: translateY(-2px);
         }
     </style>
 </head>

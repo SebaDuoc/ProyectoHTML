@@ -23,6 +23,7 @@
         height: 100vh;
         padding: 20px;
         color: #fff;
+        overflow: hidden;
     }
 
     .header {
@@ -32,27 +33,35 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 20px;
-        background-color: rgba(0, 0, 0, 0.6);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 15px 30px;
+        background-color: rgba(0, 0, 0, 0.7);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
     }
 
     .header h1 {
-        margin: 0;
-        font-size: 36px;
+        font-size: 28px;
         font-weight: bold;
+        color: #fff;
+        letter-spacing: 1.5px;
     }
 
     .icons {
         display: flex;
-        gap: 15px;
+        gap: 20px;
         position: relative;
     }
 
     .icon {
-        font-size: 30px;
+        font-size: 28px;
         cursor: pointer;
         color: #fff;
+        transition: color 0.3s, transform 0.2s;
+    }
+
+    .icon:hover {
+        color: #4a90e2;
+        transform: scale(1.1);
     }
 
     .user-container {
@@ -62,25 +71,27 @@
     .dropdown-menu {
         display: none;
         position: absolute;
-        top: 100%; /* Coloca el menú debajo del icono */
+        top: 110%;
         right: 0;
         background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         width: 150px;
-        z-index: 1000;
+        overflow: hidden;
     }
 
     .dropdown-menu a {
         display: block;
         padding: 10px;
         color: #333;
+        font-size: 14px;
         text-decoration: none;
+        transition: background-color 0.2s;
     }
 
     .dropdown-menu a:hover {
-        background-color: #f5f5f5;
+        background-color: #4a90e2;
+        color: #fff;
     }
 
     .container {
@@ -89,41 +100,54 @@
         gap: 40px;
         width: 100%;
         max-width: 900px;
+        padding-top: 80px;
     }
 
     .button {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 40px;
         border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: transform 0.2s;
+        transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
         text-decoration: none;
     }
 
     .button:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px);
+        background-color: #4a90e2;
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
     }
 
     .button .icon {
         color: #007bff;
         font-size: 60px;
         margin-bottom: 20px;
+        transition: color 0.3s;
+    }
+
+    .button:hover .icon {
+        color: #fff;
     }
 
     .button p {
         margin: 0;
         font-size: 20px;
-        text-align: center;
         color: #333;
+        text-align: center;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    .button:hover p {
+        color: #fff;
     }
 </style>
 <script>
-    // Mostrar/ocultar el menú desplegable al hacer clic en el ícono de usuario
     document.addEventListener("DOMContentLoaded", function () {
         const userIcon = document.querySelector(".user-container .fa-user");
         const dropdownMenu = document.querySelector(".user-container .dropdown-menu");
@@ -132,7 +156,6 @@
             dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
         });
 
-        // Cerrar el menú si se hace clic fuera de él
         document.addEventListener("click", function (e) {
             if (!userIcon.contains(e.target) && !dropdownMenu.contains(e.target)) {
                 dropdownMenu.style.display = "none";
@@ -158,25 +181,21 @@
     </div>
     
     <div class="container">
-        <!-- Botón para "Agregar productos" -->
         <a href="agregar_productos.html" class="button">
             <i class="fa-solid fa-plus icon"></i>
             <p>Agregar productos</p>
         </a>
     
-        <!-- Botón para "Modificar productos" -->
         <a href="modificar_productos.html" class="button">
             <i class="fa-solid fa-pen-to-square icon"></i>
             <p>Modificar productos</p>
         </a>
     
-        <!-- Botón para "Consultar stock" -->
         <a href="consultar_stock.html" class="button">
             <i class="fa-solid fa-box-open icon"></i>
             <p>Consultar stock</p>
         </a>
     
-        <!-- Botón para "Ajustar precios" -->
         <a href="ajustar_precios.html" class="button">
             <i class="fa-solid fa-dollar-sign icon"></i>
             <p>Ajustar precios</p>
