@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos avanzados */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #4a90e2, #004e92);
+            color: #333;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-radius: 12px;
+            animation: slideIn 1s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .register-container h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #004e92;
+        }
+
+        .register-container p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            color: #666;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-container i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+        }
+
+        .register-container input {
+            width: 100%;
+            padding: 12px 50px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .register-container input:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.2);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #4a90e2, #004e92);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .register-btn:hover {
+            background: linear-gradient(135deg, #3a7fc5, #003d7d);
+            transform: translateY(-2px);
+        }
+
+        .register-container a {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #004e92;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .register-container a:hover {
+            color: #006bb3;
+        }
+
+        .login-link {
+            margin-top: 30px;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        .login-link a {
+            font-weight: bold;
+            color: #004e92;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            color: #006bb3;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h1>Regístrate</h1>
+        <p>Crea tu cuenta para comenzar</p>
+        <form id="registerForm" onsubmit="return registerUser()">
+            <div class="input-container">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="Nombre de usuario" required>
+            </div>
+            <div class="input-container">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Correo electrónico" required>
+            </div>
+            <div class="input-container">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Contraseña" required>
+            </div>
+            <div class="input-container">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
+            </div>
+            <button type="submit" class="register-btn">Crear cuenta</button>
+        </form>
+        <div class="login-link">
+            ¿Ya tienes una cuenta? <a href="login.html">Inicia sesión aquí</a>
+        </div>
+    </div>
+
+    <script>
+        function registerUser() {
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (!username || !email || !password || !confirmPassword) {
+                alert("Por favor, completa todos los campos.");
+                return false;
+            }
+
+            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                alert("La contraseña debe tener al menos 8 caracteres, incluyendo una letra y un número.");
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert("Las contraseñas no coinciden.");
+                return false;
+            }
+
+            alert("Registro exitoso. ¡Bienvenido!");
+            // Redirigir a una página de bienvenida
+            window.location.href = "bienvenida.html";
+            return false;
+        }
+    </script>
+</body>
+</html>

@@ -130,12 +130,27 @@
             background: linear-gradient(135deg, #3a7fc5, #003d7d);
             transform: translateY(-2px);
         }
+
+        /* Centrar reCAPTCHA */
+        .g-recaptcha {
+            margin: 20px auto;
+            display: inline-block;
+        }
+
+        /* Estilos del selector de idioma */
+        select {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>Luschinger</h1>
-        <p>Ferretería</p>
+        <h1 id="title">Luschinger</h1>
+        <p id="subtitle">Ferretería</p>
         <div class="user-icon">
             <i class="fas fa-user-circle"></i>
         </div>
@@ -149,33 +164,86 @@
                 <i class="fas fa-lock"></i>
                 <input type="password" id="password" placeholder="Contraseña" required>
             </div>
-            <a href="contrasena.html">¿Olvidaste tu contraseña?</a>
-            <button type="submit" class="login-btn">Iniciar sesión <i class="fas fa-arrow-right"></i></button>
+
+            <div>
+                <input type="checkbox" id="remember" name="remember">
+                <label id="remember-label" for="remember">Recordarme</label>
+            </div>
+
+            <a id="forgot-password" href="contrasena.html">¿Olvidaste tu contraseña?</a>
+            <div class="g-recaptcha" data-sitekey="tu_clave_site_key"></div>
+            <button type="submit" class="login-btn" id="login-btn">Iniciar sesión <i class="fas fa-arrow-right"></i></button>
         </form>
+
+        <div>
+            <select id="language-selector" onchange="changeLanguage()">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+
+        <p id="no-account">¿No tienes una cuenta? <a id="register-link" href="registro.html">Regístrate aquí</a></p>
     </div>
 
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
-        // Función para validar y redirigir al menú principal
+        // Objeto de traducciones
+        const translations = {
+            es: {
+                title: "Luschinger",
+                subtitle: "Ferretería",
+                usernamePlaceholder: "Usuario",
+                passwordPlaceholder: "Contraseña",
+                remember: "Recordarme",
+                forgotPassword: "¿Olvidaste tu contraseña?",
+                loginButton: "Iniciar sesión",
+                noAccount: "¿No tienes una cuenta?",
+                registerLink: "Regístrate aquí",
+            },
+            en: {
+                title: "Luschinger",
+                subtitle: "Hardware Store",
+                usernamePlaceholder: "Username",
+                passwordPlaceholder: "Password",
+                remember: "Remember me",
+                forgotPassword: "Forgot your password?",
+                loginButton: "Log in",
+                noAccount: "Don't have an account?",
+                registerLink: "Register here",
+            }
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById("language-selector").value;
+            const t = translations[lang];
+            
+            document.getElementById("title").textContent = t.title;
+            document.getElementById("subtitle").textContent = t.subtitle;
+            document.getElementById("username").placeholder = t.usernamePlaceholder;
+            document.getElementById("password").placeholder = t.passwordPlaceholder;
+            document.getElementById("remember-label").textContent = t.remember;
+            document.getElementById("forgot-password").textContent = t.forgotPassword;
+            document.getElementById("login-btn").textContent = t.loginButton;
+            document.getElementById("no-account").innerHTML = `${t.noAccount} <a id="register-link" href="registro.html">${t.registerLink}</a>`;
+        }
+
         function loginUser() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            // Comprobación de campos vacíos
             if (!username || !password) {
                 alert("Por favor, completa todos los campos.");
                 return false;
             }
 
-            // Verificar que la contraseña tenga al menos 8 caracteres, una letra y un número
             const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
             if (!passwordRegex.test(password)) {
                 alert("La contraseña debe tener al menos 8 caracteres, incluyendo una letra y un número.");
                 return false;
             }
 
-            // Redirigir al menú principal
             window.location.href = "menu.html";
-            return false; // Previene el envío del formulario
+            return false;
         }
     </script>
 </body>

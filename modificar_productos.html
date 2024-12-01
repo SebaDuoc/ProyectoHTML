@@ -4,81 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Producto</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Enlace opcional para estilos externos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilos básicos para el formulario */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-image: url('https://images.unsplash.com/photo-1531824475211-72594993ce2a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-        }
-        .container {
-            max-width: 400px;
-            width: 100%;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            background-color: #f9f9f9;
+            color: #fff;
         }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
         h2 {
             text-align: center;
+            font-size: 2.5em;
             color: #333;
+            margin-bottom: 20px;
         }
-        form {
-            display: flex;
-            flex-direction: column;
+
+        .input-group {
+            margin-bottom: 20px;
         }
-        label {
-            margin-top: 10px;
-            font-weight: bold;
+
+        .input-group label {
+            font-size: 1.2em;
             color: #333;
+            margin-bottom: 8px;
+            display: block;
         }
-        input[type="text"], input[type="number"] {
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+
+        .input-group input {
             width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
         }
-        button {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+
+        .input-group input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .button {
+            padding: 14px 30px;
+            font-size: 1.2em;
+            color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            width: 48%;
         }
-        button:hover {
-            background-color: #45a049;
+
+        .button:hover {
+            transform: translateY(-5px);
+        }
+
+        .button-red {
+            background-color: #e74c3c;
+        }
+
+        .button-red:hover {
+            background-color: #c0392b;
+        }
+
+        .button-green {
+            background-color: #2ecc71;
+        }
+
+        .button-green:hover {
+            background-color: #27ae60;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Modificar Producto</h2>
-    <form action="procesar_modificacion.php" method="POST">
-        <label for="product-id">ID del Producto</label>
-        <input type="text" id="product-id" name="product-id" placeholder="Ingrese el ID del producto" required>
+    <div class="form-container">
+        <h2>Modificar Producto</h2>
+        <form action="#">
+            <div class="input-group">
+                <label for="productId">ID del Producto</label>
+                <input type="text" id="productId" name="productId" placeholder="Ingrese el ID del producto" required>
+            </div>
 
-        <label for="nombre">Nombre del Producto</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Ingrese el nombre del producto">
+            <div class="input-group">
+                <label for="productName">Nombre del Producto</label>
+                <input type="text" id="productName" name="productName" placeholder="Ingrese el nombre del producto" required>
+            </div>
 
-        <label for="precio">Precio</label>
-        <input type="number" id="precio" name="precio" step="0.01" placeholder="Ingrese el precio">
+            <div class="input-group">
+                <label for="price">Precio</label>
+                <input type="number" id="price" name="price" placeholder="Ingrese el precio" required>
+            </div>
 
-        <label for="cantidad">Cantidad en Stock</label>
-        <input type="number" id="cantidad" name="cantidad" placeholder="Ingrese la cantidad en stock">
+            <div class="input-group">
+                <label for="stock">Cantidad en Stock</label>
+                <input type="number" id="stock" name="stock" placeholder="Ingrese la cantidad en stock" required>
+            </div>
 
-        <button type="submit">Guardar Cambios</button>
-    </form>
-</div>
+            <div class="button-container">
+                <button type="button" class="button button-red">Volver</button>
+                <button type="submit" class="button button-green">Guardar Cambios</button>
+            </div>
+        </form>
+        
+    </div>
 
 </body>
 </html>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cerrar Sesión</title>
 <style>
-    /* Estilos CSS */
+    /* Estilos CSS avanzados */
     body {
         font-family: Arial, sans-serif;
         display: flex;
@@ -14,22 +14,35 @@
         height: 100vh;
         margin: 0;
         background-image: url('https://images.unsplash.com/photo-1531824475211-72594993ce2a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        color: #333;
     }
 
     .container {
         text-align: center;
-        padding: 60px;
+        padding: 50px;
         background-color: #fff;
         border-radius: 15px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         width: 100%;
-        max-width: 500px;
+        max-width: 480px;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     h1 {
-        color: #333;
+        color: #004e92;
         font-size: 2.4em;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
 
     p {
@@ -42,15 +55,19 @@
         padding: 15px 30px;
         font-size: 1.2em;
         color: #fff;
-        background-color: #007bff;
+        background: linear-gradient(135deg, #4a90e2, #004e92);
         border: none;
         border-radius: 10px;
         cursor: pointer;
         text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background 0.3s ease, transform 0.2s;
     }
 
     .button:hover {
-        background-color: #0056b3;
+        background: linear-gradient(135deg, #3a7fc5, #003d7d);
+        transform: translateY(-2px);
     }
 </style>
 </head>
@@ -58,7 +75,7 @@
 
 <div class="container">
     <h1>Sesión Cerrada</h1>
-    <p>Has cerrado sesión correctamente.</p>
+    <p>Has cerrado sesión correctamente. ¡Vuelve pronto!</p>
     <a href="login.html" class="button">Volver al Inicio de Sesión</a>
 </div>
 

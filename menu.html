@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Control de Inventario Ferretería</title>
+<title>Menu</title>
 <!-- Enlace a Font Awesome para íconos -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
@@ -17,13 +17,11 @@
         font-family: Arial, sans-serif;
         background-image: url('https://images.unsplash.com/photo-1531824475211-72594993ce2a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
         background-size: cover;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background-position: center;
         height: 100vh;
-        padding: 20px;
-        color: #fff;
-        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .header {
@@ -49,7 +47,6 @@
     .icons {
         display: flex;
         gap: 20px;
-        position: relative;
     }
 
     .icon {
@@ -64,62 +61,36 @@
         transform: scale(1.1);
     }
 
-    .user-container {
-        position: relative;
-    }
-
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 110%;
-        right: 0;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        width: 150px;
-        overflow: hidden;
-    }
-
-    .dropdown-menu a {
-        display: block;
-        padding: 10px;
-        color: #333;
-        font-size: 14px;
-        text-decoration: none;
-        transition: background-color 0.2s;
-    }
-
-    .dropdown-menu a:hover {
-        background-color: #4a90e2;
-        color: #fff;
-    }
-
     .container {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, auto);
         gap: 40px;
+        justify-items: center;
+        align-items: center;
         width: 100%;
         max-width: 900px;
-        padding-top: 80px;
     }
 
     .button {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 40px;
+        width: 250px; /* Ancho fijo */
+        height: 200px; /* Alto fijo */
+        background: rgba(255, 255, 255, 0.9);
         border-radius: 15px;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
-        transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+        text-align: center;
         text-decoration: none;
+        transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+        cursor: pointer;
     }
 
     .button:hover {
         transform: translateY(-8px);
-        background-color: #4a90e2;
+        background: #4a90e2;
         box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
     }
 
@@ -138,7 +109,6 @@
         margin: 0;
         font-size: 20px;
         color: #333;
-        text-align: center;
         font-weight: bold;
         transition: color 0.3s;
     }
@@ -146,61 +116,46 @@
     .button:hover p {
         color: #fff;
     }
+
+    /* Posición del botón central */
+    .center {
+        grid-column: 2;
+        grid-row: 2;
+    }
 </style>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const userIcon = document.querySelector(".user-container .fa-user");
-        const dropdownMenu = document.querySelector(".user-container .dropdown-menu");
-
-        userIcon.addEventListener("click", function () {
-            dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
-        });
-
-        document.addEventListener("click", function (e) {
-            if (!userIcon.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                dropdownMenu.style.display = "none";
-            }
-        });
-    });
-</script>
 </head>
 <body>
-
     <div class="header">
         <h1>Luschinger Ferretería</h1>
         <div class="icons">
             <div class="user-container">
                 <i class="fa-solid fa-user icon"></i>
-                <div class="dropdown-menu">
-                    <a href="perfil.html">Ver Perfil</a>
-                    <a href="logout.html">Cerrar Sesión</a>
-                </div>
             </div>
             <i class="fa-solid fa-gear icon"></i>
         </div>
     </div>
     
     <div class="container">
-        <a href="agregar_productos.html" class="button">
+        <a href="agregar_productos.html" class="button" style="grid-column: 1; grid-row: 1;">
             <i class="fa-solid fa-plus icon"></i>
             <p>Agregar productos</p>
         </a>
-    
-        <a href="modificar_productos.html" class="button">
+        <a href="modificar_productos.html" class="button" style="grid-column: 3; grid-row: 1;">
             <i class="fa-solid fa-pen-to-square icon"></i>
             <p>Modificar productos</p>
         </a>
-    
-        <a href="consultar_stock.html" class="button">
+        <a href="informe.xlsx" class="button center">
+            <i class="fa-solid fa-file-excel icon"></i>
+            <p>Generar informe</p>
+        </a>
+        <a href="consultar_stock.html" class="button" style="grid-column: 1; grid-row: 3;">
             <i class="fa-solid fa-box-open icon"></i>
             <p>Consultar stock</p>
         </a>
-    
-        <a href="ajustar_precios.html" class="button">
+        <a href="ajustar_precios.html" class="button" style="grid-column: 3; grid-row: 3;">
             <i class="fa-solid fa-dollar-sign icon"></i>
             <p>Ajustar precios</p>
         </a>
     </div>
-
 </body>
 </html>
