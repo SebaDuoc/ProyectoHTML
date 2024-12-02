@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consultar Stock - Ferretería</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<title>Consultar Stock - Informe</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-    /* Estilos generales */
     body {
         font-family: Arial, sans-serif;
         background-image: url('https://images.unsplash.com/photo-1531824475211-72594993ce2a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
@@ -35,23 +34,32 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Botón de volver */
     .back-button {
         display: inline-block;
-        padding: 10px 20px;
-        font-size: 16px;
+        padding: 10px;
+        font-size: 24px;
         color: #fff;
-        background-color: #6c757d;
+        background-color: #e74c3c;
         text-decoration: none;
-        border-radius: 5px;
+        border-radius: 50%;
         margin-bottom: 20px;
         text-align: center;
         transition: background 0.3s ease, transform 0.2s;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        position: absolute;
+        top: 20px;
+        left: 20px;
     }
 
     .back-button:hover {
-        background-color: #5a6268;
+        background-color: #e74c3c;
         transform: scale(1.05);
+    }
+
+    .back-button::before {
+        content: "←";
     }
 
     h1 {
@@ -60,7 +68,6 @@
         margin-bottom: 20px;
     }
 
-    /* Barra de búsqueda */
     .search-bar {
         display: flex;
         margin-bottom: 20px;
@@ -96,7 +103,6 @@
         transform: scale(1.05);
     }
 
-    /* Tabla de resultados */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -132,81 +138,23 @@
         color: #d9534f;
     }
 
-    /* Efecto de hover en filas de la tabla */
     tr:hover {
         background-color: #f1f1f1;
-    }
-
-    /* Estilos del modal */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        align-items: center;
-        justify-content: center;
-    }
-
-    .modal-content {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        max-width: 400px;
-        width: 90%;
-        text-align: center;
-    }
-
-    .modal-content h2 {
-        color: #ff0000;
-        margin-bottom: 10px;
-    }
-
-    .modal-content ul {
-        list-style: none;
-        padding: 0;
-        color: #333;
-    }
-
-    .modal-content li {
-        margin: 5px 0;
-    }
-
-    .modal-content button {
-        margin-top: 15px;
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #007bff;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .modal-content button:hover {
-        background-color: #0056b3;
     }
 </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Botón de volver -->
-    <a href="menu.html" class="back-button">Volver</a>
+<a href="menu.html" class="back-button"></a>
 
+<div class="container">
     <h1>Consultar Stock</h1>
 
-    <!-- Barra de búsqueda -->
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Buscar por nombre de producto...">
         <button onclick="searchStock()">Buscar</button>
     </div>
 
-    <!-- Tabla de resultados -->
     <table id="stockTable">
         <thead>
             <tr>
@@ -217,86 +165,71 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Filas de ejemplo -->
-            <tr>
-                <td>Martillo</td>
-                <td>Herramientas</td>
-                <td>50</td>
-                <td>$20</td>
-            </tr>
-            <tr>
-                <td>Clavos</td>
-                <td>Ferretería</td>
-                <td>5</td>
-                <td>$5</td>
-            </tr>
-            <tr>
-                <td>Destornillador</td>
-                <td>Herramientas</td>
-                <td>5</td>
-                <td>$15</td>
-            </tr>
+            <!-- Datos generados dinámicamente -->
         </tbody>
     </table>
 </div>
 
-<!-- Modal para alerta de bajo stock -->
-<div id="lowStockModal" class="modal">
-    <div class="modal-content">
-        <h2>Advertencia</h2>
-        <p>Queda poco stock de los siguientes productos:</p>
-        <ul id="lowStockList"></ul>
-        <button onclick="closeModal()">Cerrar</button>
-    </div>
-</div>
-
 <script>
-    // Función de búsqueda
+    let stockData = []; // Aquí se almacenarán los datos del Excel
+
+    // Cargar automáticamente el archivo Excel
+    function loadExcelFromFile() {
+        fetch('informe.xlsx') // Cambia 'informe.xlsx' por la ruta de tu archivo
+            .then(response => response.arrayBuffer())
+            .then(data => {
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0]; // Primera hoja
+                const sheet = workbook.Sheets[sheetName];
+                stockData = XLSX.utils.sheet_to_json(sheet); // Convertir a JSON
+                populateTable(stockData);
+            })
+            .catch(error => {
+                console.error("Error al cargar el archivo Excel:", error);
+            });
+    }
+
+    // Llenar la tabla con los datos del Excel
+    function populateTable(data) {
+        const tbody = document.querySelector("#stockTable tbody");
+        tbody.innerHTML = ""; // Limpiar tabla existente
+
+        data.forEach(item => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${item.Producto}</td>
+                <td>${item.Categoría}</td>
+                <td>${item["Cantidad en Stock"]}</td>
+                <td>${item["Precio Unitario"]}</td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        checkLowStock(); // Verificar bajo stock
+    }
+
+    // Filtrar los datos al buscar
     function searchStock() {
         const input = document.getElementById("searchInput").value.toLowerCase();
-        const rows = document.querySelectorAll("#stockTable tbody tr");
-        
-        rows.forEach(row => {
-            const product = row.cells[0].textContent.toLowerCase();
-            row.style.display = product.includes(input) ? "" : "none";
-        });
+        const filteredData = stockData.filter(item =>
+            item.Producto.toLowerCase().includes(input)
+        );
+        populateTable(filteredData);
     }
 
-    // Función para verificar y mostrar alerta de bajo stock
+    // Verificar productos con bajo stock
     function checkLowStock() {
         const rows = document.querySelectorAll("#stockTable tbody tr");
-        let lowStockFound = false;
-        const lowStockList = document.getElementById("lowStockList");
-        lowStockList.innerHTML = ""; // Limpiar lista del modal
-
         rows.forEach(row => {
             const stock = parseInt(row.cells[2].textContent, 10);
-            const productName = row.cells[0].textContent;
-            
             if (stock < 10) {
-                row.classList.add("low-stock"); // Agrega clase para resaltar fila
-                lowStockFound = true;
-                
-                // Agregar producto a la lista en el modal
-                const listItem = document.createElement("li");
-                listItem.textContent = productName;
-                lowStockList.appendChild(listItem);
+                row.classList.add("low-stock");
             }
         });
-        
-        // Si se encuentra bajo stock, mostrar el modal
-        if (lowStockFound) {
-            document.getElementById("lowStockModal").style.display = "flex";
-        }
     }
 
-    // Función para cerrar el modal
-    function closeModal() {
-        document.getElementById("lowStockModal").style.display = "none";
-    }
-
-    // Llamar a la función de bajo stock al cargar la página
-    window.onload = checkLowStock;
+    // Cargar el Excel al cargar la página
+    document.addEventListener("DOMContentLoaded", loadExcelFromFile);
 </script>
 
 </body>

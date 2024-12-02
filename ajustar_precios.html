@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ajustar Precios - Ferretería</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
     /* Estilos generales */
     body {
@@ -41,7 +42,6 @@
         font-size: 24px;
     }
 
-    /* Barra de búsqueda */
     .search-bar {
         display: flex;
         margin-bottom: 20px;
@@ -87,7 +87,7 @@
         margin-bottom: 5px;
     }
 
-    .form-group input[type="number"] {
+    .form-group input[type="text"], .form-group input[type="number"] {
         width: 100%;
         padding: 10px;
         font-size: 16px;
@@ -97,29 +97,45 @@
         transition: box-shadow 0.3s ease;
     }
 
-    .form-group input[type="number"]:focus {
+    .form-group input:focus {
         box-shadow: 0 0 8px rgba(40, 167, 69, 0.3);
     }
 
-    /* Botón de ajuste de precio */
-    .submit-btn {
-        width: 100%;
-        padding: 12px;
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .button {
+        padding: 12px 20px;
         font-size: 16px;
-        background-color: #28a745;
-        color: #fff;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.2s;
     }
 
-    .submit-btn:hover {
+    .button-green {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .button-green:hover {
         background-color: #218838;
         transform: scale(1.05);
     }
 
-    /* Estilos de notificación */
+    .button-gray {
+        background-color: #e74c3c;
+        color: #fff;
+    }
+
+    .button-gray:hover {
+        background-color: #5a6268;
+        transform: scale(1.05);
+    }
+
     .notification {
         padding: 10px;
         border-radius: 5px;
@@ -137,7 +153,6 @@
         background-color: #f8d7da;
         color: #721c24;
     }
-
 </style>
 </head>
 <body>
@@ -145,76 +160,87 @@
 <div class="container">
     <h1>Ajustar Precios</h1>
 
-    <!-- Barra de búsqueda -->
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Buscar producto por nombre...">
         <button onclick="searchProduct()">Buscar</button>
     </div>
 
-    <!-- Notificación de búsqueda -->
     <div id="searchNotification" class="notification"></div>
 
-    <!-- Formulario de ajuste de precio -->
     <form id="priceForm">
         <div class="form-group">
-            <label for="productName">Producto seleccionado</label>
-            <input type="text" id="productName" disabled placeholder="Nombre del producto" value="">
+            <label for="currentPrice">Precio actual</label>
+            <input type="text" id="currentPrice" disabled>
         </div>
 
         <div class="form-group">
             <label for="newPrice">Nuevo Precio</label>
-            <input type="number" id="newPrice" min="0" step="0.01" placeholder="Ingrese el nuevo precio" required>
+            <input type="text" id="newPrice" required>
         </div>
 
-        <!-- Botón de ajuste de precio -->
-        <button type="button" class="submit-btn" onclick="adjustPrice()">Ajustar Precio</button>
+        <div class="button-container">
+            <button type="button" class="button button-gray" onclick="window.location.href='menu.html';">Volver</button>
+            <button type="button" class="button button-green" onclick="adjustPrice()">Ajustar Precio</button>
+        </div>
     </form>
 
-    <!-- Notificación de ajuste de precio -->
     <div id="adjustNotification" class="notification"></div>
 </div>
 
 <script>
-    // Función de búsqueda simulada
+    let stockData = [];
+
+    function loadExcelFromFile() {
+        fetch('informe.xlsx')
+            .then(response => response.arrayBuffer())
+            .then(data => {
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                stockData = XLSX.utils.sheet_to_json(sheet);
+            })
+            .catch(error => console.error("Error al cargar el archivo Excel:", error));
+    }
+
     function searchProduct() {
         const input = document.getElementById("searchInput").value.toLowerCase();
         const searchNotification = document.getElementById("searchNotification");
+        const product = stockData.find(item => item.Producto.toLowerCase() === input);
 
-        // Simulación: asume que se encuentra el producto ingresado
-        const product = "Martillo"; // Cambia esto según el producto buscado
-        if (product.toLowerCase().includes(input)) {
-            document.getElementById("productName").value = product;
-            showNotification(searchNotification, "Producto encontrado: " + product, "success");
+        if (product) {
+            const formattedPrice = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(product["Precio Unitario"]);
+            document.getElementById("currentPrice").value = formattedPrice;
+            document.getElementById("newPrice").value = ""; // Limpiar campo de nuevo precio
+            showNotification(searchNotification, "Producto encontrado: " + product.Producto, "success");
         } else {
             showNotification(searchNotification, "Producto no encontrado", "error");
         }
     }
 
-    // Función de ajuste de precio simulada
     function adjustPrice() {
-        const product = document.getElementById("productName").value;
-        const newPrice = document.getElementById("newPrice").value;
+        const productName = document.getElementById("searchInput").value.toLowerCase();
+        const newPriceInput = document.getElementById("newPrice").value.replace(/\D/g, '');
+        const newPrice = parseFloat(newPriceInput);
         const adjustNotification = document.getElementById("adjustNotification");
 
-        if (product && newPrice) {
-            showNotification(adjustNotification, `El precio de ${product} ha sido ajustado a $${newPrice}`, "success");
-            // Aquí podrías agregar una llamada para enviar los datos al servidor
+        const product = stockData.find(item => item.Producto.toLowerCase() === productName);
+
+        if (product && newPrice > 0) {
+            product["Precio Unitario"] = newPrice;
+            showNotification(adjustNotification, `El precio de ${product.Producto} ha sido ajustado a $${new Intl.NumberFormat('es-CL').format(newPrice)}`, "success");
         } else {
-            showNotification(adjustNotification, "Por favor, seleccione un producto y establezca un nuevo precio.", "error");
+            showNotification(adjustNotification, "Producto no encontrado o precio inválido.", "error");
         }
     }
 
-    // Función para mostrar notificaciones
     function showNotification(element, message, type) {
         element.textContent = message;
         element.className = "notification " + type;
         element.style.display = "block";
-        
-        // Ocultar la notificación después de 3 segundos
-        setTimeout(() => {
-            element.style.display = "none";
-        }, 3000);
+        setTimeout(() => element.style.display = "none", 3000);
     }
+
+    document.addEventListener("DOMContentLoaded", loadExcelFromFile);
 </script>
 
 </body>
