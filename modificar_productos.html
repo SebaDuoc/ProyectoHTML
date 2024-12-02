@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Producto</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        /* Aquí se encuentra tu estilo CSS original */
         * {
             margin: 0;
             padding: 0;
@@ -66,6 +67,30 @@
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
 
+        .autocomplete-list {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ddd;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+            width: calc(100% - 40px); /* Ajuste según el padding */
+        }
+
+        .autocomplete-list div {
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1em; /* Asegura un tamaño legible */
+            color: #333; /* Color del texto (oscuro) */
+            background-color: #fff; /* Fondo blanco */
+            border-bottom: 1px solid #ddd; /* Añade un separador */
+        }
+
+        .autocomplete-list div:hover {
+            background-color: #f0f0f0; /* Fondo al pasar el mouse */
+            color: #000; /* Texto visible en hover */
+        }
+
         .button-container {
             display: flex;
             justify-content: space-between;
@@ -109,24 +134,25 @@
     <div class="form-container">
         <h2>Modificar Producto</h2>
         <form action="#">
-            <div class="input-group">
-                <label for="productId">ID del Producto</label>
-                <input type="text" id="productId" name="productId" placeholder="Ingrese el ID del producto" required>
+            <div class="input-group" style="position: relative;">
+                <label for="productId">Producto</label>
+                <input type="text" id="productId" name="productId" placeholder="Ingrese el producto" required autocomplete="off">
+                <div id="autocomplete-list" class="autocomplete-list"></div>
             </div>
 
             <div class="input-group">
-                <label for="productName">Nombre del Producto</label>
-                <input type="text" id="productName" name="productName" placeholder="Ingrese el nombre del producto" required>
+                <label for="productCategory">Categoría</label>
+                <input type="text" id="productCategory" name="productCategory" placeholder="Ingrese la Categoría" required>
             </div>
 
             <div class="input-group">
-                <label for="price">Precio</label>
-                <input type="number" id="price" name="price" placeholder="Ingrese el precio" required>
+                <label for="stockAmount">Cantidad en Stock</label>
+                <input type="number" id="stockAmount" name="stockAmount" placeholder="Ingrese la cantidad de stock" required>
             </div>
 
             <div class="input-group">
-                <label for="stock">Cantidad en Stock</label>
-                <input type="number" id="stock" name="stock" placeholder="Ingrese la cantidad en stock" required>
+                <label for="unitPrice">Precio Unitario</label>
+                <input type="number" id="unitPrice" name="unitPrice" placeholder="Ingrese el precio Unitario" required>
             </div>
 
             <div class="button-container">
@@ -134,8 +160,58 @@
                 <button type="submit" class="button button-green">Guardar Cambios</button>
             </div>
         </form>
-        
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const productIdField = document.getElementById("productId");
+            const autocompleteList = document.getElementById("autocomplete-list");
+            const productCategoryField = document.getElementById("productCategory");
+            const stockAmountField = document.getElementById("stockAmount");
+            const unitPriceField = document.getElementById("unitPrice");
+
+            let excelData = [];
+
+            // Función para cargar el archivo Excel
+            function loadExcel(file) {
+                fetch(file)
+                    .then(response => response.arrayBuffer())
+                    .then(data => {
+                        const workbook = XLSX.read(data, { type: "array" });
+                        const sheetName = workbook.SheetNames[0];
+                        const sheet = workbook.Sheets[sheetName];
+                        excelData = XLSX.utils.sheet_to_json(sheet);
+                    })
+                    .catch(error => console.error("Error al cargar el archivo Excel:", error));
+            }
+
+            // Habilitar búsqueda con autocompletado
+            productIdField.addEventListener("input", () => {
+                const query = productIdField.value.toLowerCase().trim();
+                autocompleteList.innerHTML = "";
+                if (query) {
+                    const matches = excelData.filter(item =>
+                        item.Producto?.toLowerCase().includes(query)
+                    );
+                    matches.forEach(match => {
+                        const div = document.createElement("div");
+                        div.textContent = match.Producto;
+                        div.addEventListener("click", () => {
+                            productIdField.value = match.Producto;
+                            productCategoryField.value = match.Categoría || "";
+                            stockAmountField.value = match["Cantidad en Stock"] || "";
+                            unitPriceField.value = match["Precio Unitario"] || "";
+                            autocompleteList.innerHTML = "";
+                        });
+                        autocompleteList.appendChild(div);
+                    });
+                }
+            });
+
+            // Llamar a la función para cargar el archivo Excel (debe estar en la misma carpeta)
+            loadExcel("informe.xlsx");
+        });
+    </script>
 
 </body>
 </html>

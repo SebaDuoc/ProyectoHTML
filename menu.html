@@ -47,6 +47,7 @@
     .icons {
         display: flex;
         gap: 20px;
+        position: relative;
     }
 
     .icon {
@@ -59,6 +60,37 @@
     .icon:hover {
         color: #4a90e2;
         transform: scale(1.1);
+    }
+
+    /* Estilos del menú desplegable */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 200px;
+        z-index: 100;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: #333;
+        transition: background-color 0.3s;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #4a90e2;
+        color: #fff;
+    }
+
+    /* Mostrar el menú cuando el ícono está activo */
+    .dropdown-menu.show {
+        display: block;
     }
 
     .container {
@@ -128,10 +160,23 @@
     <div class="header">
         <h1>Luschinger Ferretería</h1>
         <div class="icons">
-            <div class="user-container">
+            <!-- Ícono de usuario con lista desplegable -->
+            <div class="user-container" onclick="toggleDropdown('userMenu')">
                 <i class="fa-solid fa-user icon"></i>
+                <div id="userMenu" class="dropdown-menu">
+                    <a href="perfil.html">Perfil</a>
+                    <a href="logout.html">Cerrar sesión</a>
+                </div>
             </div>
-            <i class="fa-solid fa-gear icon"></i>
+
+            <!-- Ícono de configuración con lista desplegable -->
+            <div class="settings-container" onclick="toggleDropdown('settingsMenu')">
+                <i class="fa-solid fa-gear icon"></i>
+                <div id="settingsMenu" class="dropdown-menu">
+                    <a href="configuracion.html">Configuración</a>
+
+                </div>
+            </div>
         </div>
     </div>
     
@@ -157,5 +202,27 @@
             <p>Ajustar precios</p>
         </a>
     </div>
+
+    <script>
+        // Función para mostrar u ocultar los menús desplegables
+        function toggleDropdown(menuId) {
+            const menu = document.getElementById(menuId);
+            menu.classList.toggle('show');
+        }
+
+        // Cerrar los menús si se hace clic fuera de ellos
+        window.onclick = function(event) {
+            const userMenu = document.getElementById("userMenu");
+            const settingsMenu = document.getElementById("settingsMenu");
+
+            if (!event.target.matches('.user-container, .user-container *') && userMenu.classList.contains('show')) {
+                userMenu.classList.remove('show');
+            }
+
+            if (!event.target.matches('.settings-container, .settings-container *') && settingsMenu.classList.contains('show')) {
+                settingsMenu.classList.remove('show');
+            }
+        }
+    </script>
 </body>
 </html>

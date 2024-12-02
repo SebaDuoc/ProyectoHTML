@@ -182,7 +182,9 @@
                 const sheetName = workbook.SheetNames[0]; // Primera hoja
                 const sheet = workbook.Sheets[sheetName];
                 stockData = XLSX.utils.sheet_to_json(sheet); // Convertir a JSON
+                console.log(stockData); // Mostrar los datos leídos
                 populateTable(stockData);
+                checkForLowStockAlert(stockData); // Verificar alerta de bajo stock
             })
             .catch(error => {
                 console.error("Error al cargar el archivo Excel:", error);
@@ -195,12 +197,13 @@
         tbody.innerHTML = ""; // Limpiar tabla existente
 
         data.forEach(item => {
+            const cantidadStock = isNaN(parseInt(item["Cantidad en Stock"])) ? 0 : parseInt(item["Cantidad en Stock"]);
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td>${item.Producto}</td>
-                <td>${item.Categoría}</td>
-                <td>${item["Cantidad en Stock"]}</td>
-                <td>${item["Precio Unitario"]}</td>
+                <td>${item["Producto"] || "N/A"}</td>
+                <td>${item["Categoría"] || "N/A"}</td>
+                <td>${cantidadStock}</td>
+                <td>${item["Precio Unitario"] || "N/A"}</td>
             `;
             tbody.appendChild(row);
         });
@@ -212,7 +215,7 @@
     function searchStock() {
         const input = document.getElementById("searchInput").value.toLowerCase();
         const filteredData = stockData.filter(item =>
-            item.Producto.toLowerCase().includes(input)
+            item["Producto"].toLowerCase().includes(input)
         );
         populateTable(filteredData);
     }
@@ -222,10 +225,18 @@
         const rows = document.querySelectorAll("#stockTable tbody tr");
         rows.forEach(row => {
             const stock = parseInt(row.cells[2].textContent, 10);
-            if (stock < 10) {
+            if (!isNaN(stock) && stock < 10) {
                 row.classList.add("low-stock");
             }
         });
+    }
+
+    // Mostrar alerta si hay productos con bajo stock
+    function checkForLowStockAlert(data) {
+        const lowStockItems = data.filter(item => parseInt(item["Cantidad en Stock"]) < 10);
+        if (lowStockItems.length > 0) {
+            alert(`¡Atención! Hay ${lowStockItems.length} productos con bajo stock.`);
+        }
     }
 
     // Cargar el Excel al cargar la página
