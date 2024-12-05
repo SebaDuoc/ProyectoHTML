@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ajustar Precios - Ferretería</title>
+<title>Ajustar Precios</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
@@ -214,6 +214,9 @@
             <button type="button" class="button button-green" onclick="adjustPrice()">Ajustar Precio</button>
         </div>
     </form>
+
+    <!-- Notificación de éxito -->
+    <div id="notification" class="notification success">¡Cambios guardados correctamente!</div>
 </div>
 
 <script>
@@ -253,6 +256,17 @@
             }
         });
     });
+
+    function adjustPrice() {
+        // Mostrar la notificación de éxito
+        const notification = document.getElementById('notification');
+        notification.style.display = 'block';
+
+        // Ocultar la notificación después de 3 segundos
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
 </script>
 
 </body>

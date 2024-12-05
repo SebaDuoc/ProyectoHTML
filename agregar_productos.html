@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agregar Productos</title>
 <style>
-    /* Estilos CSS Avanzados */
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-image: url('https://images.unsplash.com/photo-1531824475211-72594993ce2a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
@@ -32,6 +31,18 @@
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+
+    .alert {
+        display: none;
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 15px;
+        border: 1px solid #c3e6cb;
+        text-align: center;
+        font-size: 0.9em;
     }
 
     h1 {
@@ -97,46 +108,12 @@
         background-color: #218838;
         transform: translateY(-3px);
     }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-        max-height: 250px;
-        overflow-y: auto;
-        margin-top: 15px;
-        border-top: 1px solid #ddd;
-    }
-
-    li {
-        background: #f9f9f9;
-        margin: 10px 0;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        animation: slideIn 0.4s ease;
-    }
-
-    @keyframes slideIn {
-        from { opacity: 0; transform: translateX(-10px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-
-    .product-info {
-        font-size: 0.9em;
-        color: #555;
-    }
-
-    .product-info strong {
-        color: #333;
-    }
 </style>
 </head>
 <body>
     <div class="container">
         <h1>Agregar Productos</h1>
+        <div id="alert" class="alert">¡Producto agregado correctamente!</div>
         <div class="form-container">
             <input type="text" id="productName" placeholder="Nombre del producto">
             <input type="number" id="productQuantity" placeholder="Cantidad">
@@ -147,51 +124,52 @@
             <button class="btn-volver" id="backButton">Volver</button>
             <button class="btn-add" id="addButton">Agregar</button>
         </div>
-        <ul id="productList"></ul>
     </div>
 
     <script>
-        // Variables de elementos
         const addButton = document.getElementById('addButton');
         const backButton = document.getElementById('backButton');
         const productNameInput = document.getElementById('productName');
         const productQuantityInput = document.getElementById('productQuantity');
         const productCodeInput = document.getElementById('productCode');
         const productPriceInput = document.getElementById('productPrice');
-        const productList = document.getElementById('productList');
+        const alert = document.getElementById('alert');
 
-        // Función para agregar un producto a la lista
+        // Función para agregar un producto
         addButton.addEventListener('click', () => {
             const name = productNameInput.value.trim();
             const quantity = productQuantityInput.value.trim();
             const code = productCodeInput.value.trim();
             const price = productPriceInput.value.trim();
 
-            // Validación y alerta interactiva
             if (name === "" || quantity === "" || code === "" || price === "") {
-                alert("Por favor completa todos los campos.");
+                alert.textContent = "Por favor, completa todos los campos.";
+                alert.style.backgroundColor = "#f8d7da";
+                alert.style.color = "#721c24";
+                alert.style.borderColor = "#f5c6cb";
+                alert.style.display = "block";
                 return;
             }
 
-            // Crear un nuevo elemento de lista con el contenido del producto
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <div class="product-info"><strong>Nombre:</strong> ${name}</div>
-                <div class="product-info"><strong>Cantidad:</strong> ${quantity}</div>
-                <div class="product-info"><strong>Código:</strong> ${code}</div>
-                <div class="product-info"><strong>Precio:</strong> $${parseFloat(price).toFixed(2)} CLP</div>
-            `;
-            
-            productList.appendChild(li);  // Agregar el producto a la lista
+            // Mostrar mensaje de éxito
+            alert.textContent = "¡Producto agregado correctamente!";
+            alert.style.backgroundColor = "#d4edda";
+            alert.style.color = "#155724";
+            alert.style.borderColor = "#c3e6cb";
+            alert.style.display = "block";
 
-            // Limpiar campos de entrada
+            // Ocultar la alerta después de 3 segundos
+            setTimeout(() => {
+                alert.style.display = "none";
+            }, 3000);
+
+            // Limpiar campos
             productNameInput.value = '';
             productQuantityInput.value = '';
             productCodeInput.value = '';
             productPriceInput.value = '';
         });
 
-        // Función para el botón "Volver"
         backButton.addEventListener('click', () => {
             window.location.href = 'menu.html';
         });
